@@ -69,8 +69,10 @@ namespace Brave_new_world
                     if (map[x, y] != wall)
                     {
                         map[x, y] = empty;
-                        map[x + random.Next(map.GetLength(0) - x), y + random.Next(map.GetLength(1) - y)] = star;
+                        map[x, y + random.Next(map.GetLength(1) - y)] = star;
                     }
+                    
+                    map[x + random.Next(map.GetLength(0) - x), y] = star;
                 }
             }
         }
