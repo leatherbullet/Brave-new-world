@@ -65,7 +65,7 @@ namespace Brave_new_world
                     map[x, 0] = wall;
                     map[wallLine, y] = wall;
                     map[x, wallColum] = wall;
-
+                 
                     if (map[x, y] != wall)
                     {
                         map[x, y] = empty;
