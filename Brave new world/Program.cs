@@ -37,7 +37,7 @@ namespace Brave_new_world
 
                 pressKey = Console.ReadKey();
 
-                GetNumberStars(map, pacmanX, pacmanY, ref score);
+                KeepScore(map, pacmanX, pacmanY, ref score);
                 
                 HandleInput(pressKey, ref pacmanX, ref pacmanY, map);
 
@@ -143,7 +143,7 @@ namespace Brave_new_world
             Console.WriteLine(pacman);
         }
 
-        static void GetNumberStars(char[,] map, int pacmanX, int pacmanY, ref int score)
+        static void KeepScore(char[,] map, int pacmanX, int pacmanY, ref int score)
         {
             char empty = ' ';
             char star = '*';
