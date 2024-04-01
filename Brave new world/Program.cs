@@ -16,14 +16,14 @@ namespace Brave_new_world
             ConsoleKeyInfo pressKey;
             
             int countStar = 0;
-            int pacmanX = 1;
-            int pacmanY = 1;
+            int pacmanPositionX = 1;
+            int pacmanPositionY = 1;
             int score = 0;
             int scorePosition = 32;
 
             bool isCollectedAllStars = false;
             
-            DrawMap(map, ref countStar);
+            countStar = DrawMap(map, countStar);
             
             while (isCollectedAllStars == false)
             {
@@ -31,21 +31,21 @@ namespace Brave_new_world
  
                 ShowMap(map);
 
-                DrawPacman(pacmanX, pacmanY);
+                DrawPacman(pacmanPositionX, pacmanPositionY);
 
-                DrawScore(scorePosition, ref score);
+                DrawScore(scorePosition, score);
 
-                KeepScore(map, pacmanX, pacmanY, ref score);
+                score = KeepScore(map, pacmanPositionX, pacmanPositionY, score);
                 
                 pressKey = Console.ReadKey();
                 
-                HandleInput(pressKey, ref pacmanX, ref pacmanY, map);
+                HandleInput(pressKey, ref pacmanPositionX, ref pacmanPositionY, map);
 
-                isCollectedAllStars = CompleteGame(score, countStar);
+                isCollectedAllStars = CollectAllStars(score, countStar);
             }
         }
 
-        static void DrawMap(char[,] map, ref int count)
+        static int DrawMap(char[,] map, int count)
         {
             Random random = new Random();
 
@@ -76,6 +76,8 @@ namespace Brave_new_world
                         }
                     }
                 }
+
+                return count;
             }
         }
 
@@ -94,26 +96,26 @@ namespace Brave_new_world
             }
         }
 
-        static void HandleInput(ConsoleKeyInfo pressKey, ref int pacmanX, ref int pacmanY, char[,] map)
+        static void HandleInput(ConsoleKeyInfo pressKey, ref int pacmanPositionX, ref int pacmanPositionY, char[,] map)
         {
             int[] direction = GetDirection(pressKey);
 
-            MovePlayer(map, ref pacmanX, ref pacmanY, direction);
+            MovePlayer(map, ref pacmanPositionX, ref pacmanPositionY, direction);
         }
 
-        static void MovePlayer(char[,] map, ref int pacmanX, ref int pacmanY, int[] direction)
+        static void MovePlayer(char[,] map, ref int pacmanPositionX, ref int pacmanPositionY, int[] direction)
         {
             char wall = '#';
 
-            int nextPacmanPositionX = pacmanX + direction[0];
-            int nextPacmanPositionY = pacmanY + direction[1];
+            int nextPacmanPositionX = pacmanPositionX + direction[0];
+            int nextPacmanPositionY = pacmanPositionY + direction[1];
 
             char nextCell = map[nextPacmanPositionY, nextPacmanPositionX];
 
             if (nextCell != wall)
             {
-                pacmanX = nextPacmanPositionX;
-                pacmanY = nextPacmanPositionY;
+                pacmanPositionX = nextPacmanPositionX;
+                pacmanPositionY = nextPacmanPositionY;
             }
         }
 
@@ -147,26 +149,28 @@ namespace Brave_new_world
             Console.WriteLine(pacman);
         }
 
-        static void KeepScore(char[,] map, int pacmanX, int pacmanY, ref int score)
+        static int KeepScore(char[,] map, int pacmanPositionX, int pacmanPositionY, int score)
         {
             char empty = ' ';
             char star = '*';
 
-            if (map[pacmanY, pacmanX] == star)
+            if (map[pacmanPositionY, pacmanPositionX] == star)
             {
                 score++;
-                map[pacmanY, pacmanX] = empty;
+                map[pacmanPositionY, pacmanPositionX] = empty;
             }
+
+            return score;
         }
 
-        static void DrawScore(int position, ref int score)
+        static void DrawScore(int position, int score)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.SetCursorPosition(position, 0);
             Console.Write($"Score: {score}");
         }
 
-        static bool CompleteGame(int score, int count)
+        static bool CollectAllStars(int score, int count)
         {
             return count == score;
         }
