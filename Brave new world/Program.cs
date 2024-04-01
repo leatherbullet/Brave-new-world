@@ -20,17 +20,19 @@ namespace Brave_new_world
 
             Console.CursorVisible = false;
 
-            ConsoleKeyInfo pressKey = new ConsoleKeyInfo('W', ConsoleKey.W, false, false, false);
-
-
+            ConsoleKeyInfo pressKey;
+            
+            int countStar = 0;
             int pacmanX = 1;
             int pacmanY = 1;
             int score = 0;
             int scorePosition = 32;
 
-            DrawMap(map);
+            bool isWork = true;
             
-            while (true)
+            DrawMap(map, ref countStar);
+            
+            while (isWork)
             {
                 Console.Clear();
  
@@ -38,15 +40,15 @@ namespace Brave_new_world
 
                 DrawPacman(pacmanX, pacmanY);
 
-                DrawScore(scorePosition,score);
+                DrawScore(scorePosition, ref score, map, pacmanX, pacmanY, countStar, ref isWork);
 
                 pressKey = Console.ReadKey();
 
-                HandleInput(pressKey, ref pacmanX, ref pacmanY, map, ref score);
+                HandleInput(pressKey, ref pacmanX, ref pacmanY, map);
             }
         }
 
-        static void DrawMap(char[,] map)
+        static void DrawMap(char[,] map, ref int count)
         {
             Random random = new Random();
 
@@ -70,6 +72,11 @@ namespace Brave_new_world
                     {
                         map[x, y] = empty;
                         map[x, y + random.Next(map.GetLength(1) - y)] = star;
+
+                        if (map[x, y] == star)
+                        {
+                           count++; 
+                        }
                     }
                 }
             }
@@ -90,7 +97,7 @@ namespace Brave_new_world
             }
         }
 
-        static void HandleInput(ConsoleKeyInfo pressKey, ref int pacmanX, ref int pacmanY, char[,] map, ref int score)
+        static void HandleInput(ConsoleKeyInfo pressKey, ref int pacmanX, ref int pacmanY, char[,] map)
         {
             int[] direction = GetDirection(pressKey);
 
@@ -106,12 +113,6 @@ namespace Brave_new_world
             {
                 pacmanX = nextPacmanPositionX;
                 pacmanY = nextPacmanPositionY;
-
-                if (nextCell == star)
-                {
-                    score++;
-                    map[nextPacmanPositionY, nextPacmanPositionX] = empty;
-                }
             }
         }
 
@@ -138,11 +139,23 @@ namespace Brave_new_world
             Console.WriteLine('@');
         }
 
-        static void DrawScore(int position, int score)
+        static void DrawScore(int position, ref int score, char[,] map, int pacmanX, int pacmanY, int count, ref bool isWork)
         {
+            char empty = ' ';
+            char star = '*';
+
+            if (map[pacmanY, pacmanX] == star)
+            {
+                score++;
+                map[pacmanY, pacmanX] = empty;
+            }
+            
             Console.ForegroundColor = ConsoleColor.Red;
             Console.SetCursorPosition(position, 0);
             Console.Write($"Score: {score}");
+
+            if (count == score)
+                 isWork = false;
         }
     }
 }
