@@ -76,9 +76,9 @@ namespace Brave_new_world
                         }
                     }
                 }
-
-                return count;
             }
+
+            return count;
         }
 
         static void ShowMap(char[,] map)
