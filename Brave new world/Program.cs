@@ -21,11 +21,11 @@ namespace Brave_new_world
             int score = 0;
             int scorePosition = 32;
 
-            bool isWork = true;
+            bool isAllCollectedStars = false;
             
             DrawMap(map, ref countStar);
             
-            while (isWork)
+            while (isAllCollectedStars = false)
             {
                 Console.Clear();
  
@@ -35,13 +35,13 @@ namespace Brave_new_world
 
                 DrawScore(scorePosition, ref score);
 
+                KeepScore(map, pacmanX, pacmanY, ref score);
+                
                 pressKey = Console.ReadKey();
                 
                 HandleInput(pressKey, ref pacmanX, ref pacmanY, map);
 
-                KeepScore(map, pacmanX, pacmanY, ref score);
-
-                CompleteGame(score, countStar, ref isWork);
+                isAllCollectedStars = CompleteGame(score, countStar);
             }
         }
 
@@ -103,15 +103,14 @@ namespace Brave_new_world
 
         static void MovePlayer(char[,] map, ref int pacmanX, ref int pacmanY, int[] direction)
         {
-            char empty = ' ';
-            char star = '*';
+            char wall = '#';
 
             int nextPacmanPositionX = pacmanX + direction[0];
             int nextPacmanPositionY = pacmanY + direction[1];
 
             char nextCell = map[nextPacmanPositionY, nextPacmanPositionX];
 
-            if (nextCell == empty || nextCell == star)
+            if (nextCell != wall)
             {
                 pacmanX = nextPacmanPositionX;
                 pacmanY = nextPacmanPositionY;
@@ -120,15 +119,20 @@ namespace Brave_new_world
 
         static int[] GetDirection(ConsoleKeyInfo pressKey)
         {
+            const ConsoleKey CommandUp = ConsoleKey.W;
+            const ConsoleKey CommandDown = ConsoleKey.S;
+            const ConsoleKey CommandLeft = ConsoleKey.A;
+            const ConsoleKey CommandRight = ConsoleKey.D;
+            
             int[] direction = { 0, 0 };
 
-            if (pressKey.Key == ConsoleKey.W)
+            if (pressKey.Key == CommandUp)
                 direction[1] = -1;
-            else if (pressKey.Key == ConsoleKey.S)
+            else if (pressKey.Key == CommandDown)
                 direction[1] = 1;
-            else if (pressKey.Key == ConsoleKey.A)
+            else if (pressKey.Key == CommandLeft)
                 direction[0] = -1;
-            else if (pressKey.Key == ConsoleKey.D)
+            else if (pressKey.Key == CommandRight)
                 direction[0] = 1;
 
             return direction;
@@ -162,10 +166,9 @@ namespace Brave_new_world
             Console.Write($"Score: {score}");
         }
 
-        static void CompleteGame(int score, int count, ref bool isWork)
+        static boll CompleteGame(int score, int count)
         {
-            if (count == score)
-               isWork = false; 
+            return count == score;
         }
     }
 }
