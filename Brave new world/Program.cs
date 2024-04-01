@@ -25,7 +25,7 @@ namespace Brave_new_world
             
             DrawMap(map, ref countStar);
             
-            while (isAllCollectedStars = false)
+            while (isAllCollectedStars == false)
             {
                 Console.Clear();
  
@@ -166,7 +166,7 @@ namespace Brave_new_world
             Console.Write($"Score: {score}");
         }
 
-        static boll CompleteGame(int score, int count)
+        static bool CompleteGame(int score, int count)
         {
             return count == score;
         }
