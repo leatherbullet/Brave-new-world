@@ -21,11 +21,11 @@ namespace Brave_new_world
             int score = 0;
             int scorePosition = 32;
 
-            bool isAllCollectedStars = false;
+            bool isCollectedAllStars = false;
             
             DrawMap(map, ref countStar);
             
-            while (isAllCollectedStars == false)
+            while (isCollectedAllStars == false)
             {
                 Console.Clear();
  
@@ -41,7 +41,7 @@ namespace Brave_new_world
                 
                 HandleInput(pressKey, ref pacmanX, ref pacmanY, map);
 
-                isAllCollectedStars = CompleteGame(score, countStar);
+                isCollectedAllStars = CompleteGame(score, countStar);
             }
         }
 
