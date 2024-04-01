@@ -36,10 +36,10 @@ namespace Brave_new_world
                 DrawScore(scorePosition, ref score);
 
                 pressKey = Console.ReadKey();
-
-                KeepScore(map, pacmanX, pacmanY, ref score);
                 
                 HandleInput(pressKey, ref pacmanX, ref pacmanY, map);
+
+                KeepScore(map, pacmanX, pacmanY, ref score);
 
                 CompleteGame(score, countStar, ref isWork);
             }
