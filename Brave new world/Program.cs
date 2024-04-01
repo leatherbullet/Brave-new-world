@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Schema;
 
 namespace Brave_new_world
 {
@@ -40,11 +33,15 @@ namespace Brave_new_world
 
                 DrawPacman(pacmanX, pacmanY);
 
-                DrawScore(scorePosition, ref score, map, pacmanX, pacmanY, countStar, ref isWork);
+                DrawScore(scorePosition, ref score);
 
                 pressKey = Console.ReadKey();
 
+                GetNumberStars(map, pacmanX, pacmanY, ref score);
+                
                 HandleInput(pressKey, ref pacmanX, ref pacmanY, map);
+
+                CompleteGame(score, countStar, ref isWork);
             }
         }
 
@@ -101,6 +98,11 @@ namespace Brave_new_world
         {
             int[] direction = GetDirection(pressKey);
 
+            MovePlayer(map, ref pacmanX, ref pacmanY, direction);
+        }
+
+        static void MovePlayer(char[,] map, ref int pacmanX, ref int pacmanY, int[] direction)
+        {
             char empty = ' ';
             char star = '*';
 
@@ -134,12 +136,14 @@ namespace Brave_new_world
 
         static void DrawPacman(int pacmanPositionX, int pacmanPositionY)
         {
+            char pacman = '@';
+            
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.SetCursorPosition(pacmanPositionX, pacmanPositionY);
-            Console.WriteLine('@');
+            Console.WriteLine(pacman);
         }
 
-        static void DrawScore(int position, ref int score, char[,] map, int pacmanX, int pacmanY, int count, ref bool isWork)
+        static void GetNumberStars(char[,] map, int pacmanX, int pacmanY, ref int score)
         {
             char empty = ' ';
             char star = '*';
@@ -149,13 +153,19 @@ namespace Brave_new_world
                 score++;
                 map[pacmanY, pacmanX] = empty;
             }
-            
+        }
+
+        static void DrawScore(int position, ref int score)
+        {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.SetCursorPosition(position, 0);
             Console.Write($"Score: {score}");
+        }
 
+        static void CompleteGame(int score, int count, ref bool isWork)
+        {
             if (count == score)
-                 isWork = false;
+               isWork = false; 
         }
     }
 }
