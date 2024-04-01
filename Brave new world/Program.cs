@@ -45,7 +45,7 @@ namespace Brave_new_world
             }
         }
 
-        static int DrawMap(char[,] map, int count)
+        static int DrawMap(char[,] map, int countStar)
         {
             Random random = new Random();
 
@@ -72,13 +72,13 @@ namespace Brave_new_world
 
                         if (map[x, y] == star)
                         {
-                           count++; 
+                           countStar++; 
                         }
                     }
                 }
             }
 
-            return count;
+            return countStar;
         }
 
         static void ShowMap(char[,] map)
@@ -170,9 +170,9 @@ namespace Brave_new_world
             Console.Write($"Score: {score}");
         }
 
-        static bool CollectAllStars(int score, int count)
+        static bool CollectAllStars(int score, int countStar)
         {
-            return count == score;
+            return countStar == score;
         }
     }
 }
